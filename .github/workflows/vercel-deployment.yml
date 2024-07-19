@@ -41,8 +41,11 @@ jobs:
         if: inputs.IS_PROD
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Build Project Artifacts
-        if: inputs.PREBUILT
+      - name: Build Project Artifacts (Preview)
+        if: inputs.PREBUILT && !inputs.IS_PROD
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts (Production)
+        if: inputs.PREBUILT && inputs.IS_PROD
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel (No Prebuilt, Preview)
